@@ -19,7 +19,6 @@ class CreateKurirProfileTable extends Migration
 
         $table->string('no_hp');
         $table->text('alamat');
-
         $table->timestamps();
     });
     }
