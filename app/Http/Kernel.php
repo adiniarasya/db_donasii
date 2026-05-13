@@ -63,5 +63,6 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-    ];
+        'role' => \App\Http\Middleware\RoleMiddleware::class,  // Boleh pakai koma di akhir
+    ];  // ← Hanya SATU tutup kurung dan titik koma
 }
