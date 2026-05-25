@@ -16,21 +16,16 @@ class CreateDonasiTable extends Migration
         Schema::create('donasi', function (Blueprint $table) {
         $table->id();
         $table->foreignId('user_id')->constrained();
-
         $table->enum('jenis_donasi', ['uang', 'barang']);
-
         // uang
         $table->integer('nominal')->nullable();
-
         // barang
         $table->string('nama_barang')->nullable();
         $table->integer('jumlah_barang')->nullable();
         $table->string('kondisi')->nullable();
-
         $table->text('deskripsi')->nullable();
         $table->string('status')->default('pending');
         $table->date('tanggal');
-
         $table->timestamps();
     });
     }

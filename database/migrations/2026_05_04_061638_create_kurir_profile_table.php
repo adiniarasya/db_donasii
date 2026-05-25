@@ -16,7 +16,6 @@ class CreateKurirProfileTable extends Migration
         Schema::create('kurir_profile', function (Blueprint $table) {
         $table->id();
         $table->foreignId('user_id')->constrained();
-
         $table->string('no_hp');
         $table->text('alamat');
         $table->timestamps();
