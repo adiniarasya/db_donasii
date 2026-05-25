@@ -1,5 +1,3 @@
-<!-- resources/views/home.blade.php -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +28,7 @@
     <style>
 
         body{
-            background: linear-gradient(135deg,#667eea,#764ba2);
+            background: linear-gradient(135deg,#343a40,#007bff);
             min-height:100vh;
             overflow-x:hidden;
             font-family: 'Source Sans Pro', sans-serif;

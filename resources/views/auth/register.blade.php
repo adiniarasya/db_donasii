@@ -23,7 +23,7 @@
   <style>
 
     body{
-        background: linear-gradient(135deg,#667eea,#764ba2);
+        background: linear-gradient(135deg,#343a40,#007bff);
         min-height:100vh;
         overflow:hidden;
     }
@@ -50,13 +50,15 @@
     }
 
     .btn-primary{
-        border-radius:10px;
-        background: linear-gradient(135deg,#667eea,#764ba2);
-        border:none;
+    border-radius:10px;
+    background: linear-gradient(135deg,#343a40,#007bff);
+    border:none;
+    transition:0.3s;
     }
 
     .btn-primary:hover{
-        opacity:0.9;
+        background: linear-gradient(135deg,#2c3136,#0056b3);
+        transform:translateY(-2px);
     }
 
     .form-control{
@@ -74,8 +76,14 @@
     }
 
     .login-link a{
-        color:#667eea;
-        font-weight:bold;
+    color:#007bff;
+    font-weight:bold;
+    text-decoration:none;
+    transition:0.3s;
+    }
+
+    .login-link a:hover{
+        color:#0056b3;
     }
 
   </style>
@@ -110,7 +118,6 @@
                 </div>
             @endif
 
-            <!-- FORM -->
             <form method="POST" action="{{ route('register') }}">
                 {{ csrf_field() }}
                 <!-- NAMA -->
@@ -123,7 +130,6 @@
                     </div>
                 </div>
 
-                <!-- EMAIL -->
                 <div class="input-group mb-3">
                     <input type="email" class="form-control" name="email" placeholder="Email" required>
                     <div class="input-group-append">
@@ -133,7 +139,6 @@
                     </div>
                 </div>
 
-                <!-- PASSWORD -->
                 <div class="input-group mb-3">
                     <input type="password" class="form-control" name="password" placeholder="Password" required>
                     <div class="input-group-append">
@@ -143,7 +148,6 @@
                     </div>
                 </div>
 
-                <!-- KONFIRMASI PASSWORD -->
                 <div class="input-group mb-3">
                     <input type="password" class="form-control" name="password_confirmation" placeholder="Konfirmasi Password" required>
                     <div class="input-group-append">
@@ -153,7 +157,6 @@
                     </div>
                 </div>
 
-                <!-- ROLE -->
                 <div class="input-group mb-3">
                     <select name="role" class="form-control" required>
                         <option value="">-- Pilih Role --</option>
@@ -168,13 +171,11 @@
                     </div>
                 </div>
 
-                <!-- BUTTON -->
                 <button type="submit" class="btn btn-primary btn-block py-2">
                     <i class="fas fa-user-plus"></i> Daftar
                 </button>
             </form>
 
-            <!-- LOGIN -->
             <div class="login-link"> Sudah punya akun?
                 <a href="{{ route('login') }}">
                     Login

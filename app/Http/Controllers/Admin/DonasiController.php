@@ -1,12 +1,12 @@
 <?php
 
-// app/Http/Controllers/Admin/DonasiController.php
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Donasi;
 use App\User;
 use App\Penjemputan;
+use Illuminate\Http\Request;
 
 class DonasiController extends Controller
 {
@@ -55,4 +55,25 @@ class DonasiController extends Controller
         
         return redirect()->back()->with('success', 'Donasi ditolak');
     }
+
+    public function assignKurir(Request $request, $id)
+{
+    $request->validate([
+        'kurir_id' => 'required',
+        'tanggal_jemput' => 'required|date'
+    ]);
+
+    $donasi = Donasi::findOrFail($id);
+
+    Penjemputan::create([
+        'donasi_id' => $donasi->id,
+        'kurir_id' => $request->kurir_id,
+        'alamat_jemput' => $donasi->user->alamat ?? '-',
+        'tanggal_jemput' => $request->tanggal_jemput,
+        'status' => 'menunggu'
+    ]);
+
+    return redirect()->back()
+        ->with('success', 'Kurir berhasil ditugaskan!');
+}
 }

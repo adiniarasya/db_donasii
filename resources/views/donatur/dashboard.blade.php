@@ -1,3 +1,6 @@
+@extends('template.layout')
+@section('title', 'Dashboard Admin')
+@section('content')
 <h1>Dashboard Donatur</h1>
 
 <p>Selamat datang, {{ auth()->user()->name }}</p>
@@ -66,3 +69,4 @@
 <p>Belum ada donasi</p>
 
 @endif
+@endsection

@@ -30,7 +30,7 @@
   <style>
 
     body{
-        background: linear-gradient(135deg,#667eea,#764ba2);
+        background: linear-gradient(135deg,#343a40,#007bff);
         min-height:100vh;
         overflow:hidden;
     }
@@ -58,13 +58,15 @@
     }
 
     .btn-primary{
-        border-radius:10px;
-        background: linear-gradient(135deg,#667eea,#764ba2);
-        border:none;
+    border-radius:10px;
+    background: linear-gradient(135deg,#343a40,#007bff);
+    border:none;
+    transition:0.3s;
     }
 
     .btn-primary:hover{
-        opacity:0.9;
+        background: linear-gradient(135deg,#2c3136,#0056b3);
+        transform:translateY(-2px);
     }
 
     .form-control{
@@ -82,8 +84,14 @@
     }
 
     .register-link a{
-        color:#667eea;
-        font-weight:bold;
+    color:#007bff;
+    font-weight:bold;
+    text-decoration:none;
+    transition:0.3s;
+    }
+
+    .register-link a:hover{
+        color:#0056b3;
     }
 
   </style>
