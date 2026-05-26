@@ -68,4 +68,12 @@ class PenjemputanController extends Controller
         
         return redirect()->back()->with('success', 'Kurir berhasil ditugaskan');
     }
+    public function dashboard()
+{
+    $penjemputan = \App\Penjemputan::where('kurir_id', auth()->user()->id)->get();
+    $totalTugas = $penjemputan->count();
+    $tugasAktif = $penjemputan->where('status', '!=', 'selesai')->count();
+    
+    return view('kurir.dashboard', compact('penjemputan', 'totalTugas', 'tugasAktif'));
+}
 }
