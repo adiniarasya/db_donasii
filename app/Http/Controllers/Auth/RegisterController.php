@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use App\KurirProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -53,11 +54,22 @@ class RegisterController extends Controller
 
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'role' => $data['role'],
         ]);
+
+        // Jika role kurir, otomatis buat profile
+        if ($user->role == 'kurir') {
+            KurirProfile::create([
+                'user_id' => $user->id,
+                'no_hp' => '-',
+                'alamat' => '-'
+            ]);
+        }
+
+        return $user;
     }
 }

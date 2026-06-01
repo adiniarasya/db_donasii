@@ -159,6 +159,20 @@
 </style>
 
 <div class="container-fluid">
+    @if(
+        !auth()->user()->kurirProfile ||
+        auth()->user()->kurirProfile->no_hp == '-' ||
+        auth()->user()->kurirProfile->alamat == '-'
+    )
+    <div class="alert alert-warning">
+        <strong>Profil belum lengkap!</strong>
+        Silakan lengkapi nomor HP dan alamat terlebih dahulu agar admin dapat memberikan tugas penjemputan.
+
+        <a href="{{ route('kurir.profil') }}" class="btn btn-warning btn-sm ml-2">
+            Lengkapi Profil
+        </a>
+    </div>
+    @endif
 
     {{-- HEADER GRADIENT --}}
     <div class="gradient-header p-4 mb-4">

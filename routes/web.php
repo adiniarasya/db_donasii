@@ -37,8 +37,9 @@ Route::middleware(['auth', 'role:donatur'])->prefix('donatur')->name('donatur.')
 
 // KURIR ROUTES
 Route::middleware(['auth', 'role:kurir'])->prefix('kurir')->name('kurir.')->group(function () {
-    Route::get('/dashboard', [KurirPenjemputanController::class, 'dashboard'])->name('dashboard'); // TAMBAHKAN
     Route::get('/penjemputan', [KurirPenjemputanController::class, 'index'])->name('penjemputan');
+    Route::get('/profil', [KurirPenjemputanController::class, 'profil'])->name('profil');
+    Route::post('/profil', [KurirPenjemputanController::class, 'updateProfil'])->name('profil.update');
     Route::post('/penjemputan/{id}/update-status', [KurirPenjemputanController::class, 'updateStatus'])->name('penjemputan.update');
 });
 

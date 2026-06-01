@@ -1,9 +1,6 @@
 @extends('template.layout')
-
 @section('title', 'Detail Donasi')
-
 @section('content')
-
 <style>
     .gradient-header {
         background: linear-gradient(135deg, #0f172a, #2563eb);
@@ -292,40 +289,22 @@
                         <i class="fas fa-cog mr-2" style="color: #2563eb;"></i>
                         Aksi yang Tersedia
                     </h5>
-
                     @if($donasi->status == 'pending')
-                        <form action="{{ route('admin.donasi.verifikasi', $donasi->id) }}" method="POST" class="mb-3">
-                            {{ csrf_field() }}
-                            <button type="submit" class="btn btn-verifikasi text-white w-100" onclick="return confirm('Verifikasi donasi ini?')">
-                                <i class="fas fa-check-circle mr-2"></i>
-                                Verifikasi Donasi
-                            </button>
-                        </form>
-                        
-                        <form action="{{ route('admin.donasi.tolak', $donasi->id) }}" method="POST" class="mb-3">
-                            {{ csrf_field() }}
-                            <button type="submit" class="btn btn-tolak text-white w-100" onclick="return confirm('Tolak donasi ini?')">
-                                <i class="fas fa-times-circle mr-2"></i>
-                                Tolak Donasi
-                            </button>
-                        </form>
-                    @elseif($donasi->status == 'diverifikasi')
-                        <div class="alert alert-info text-center rounded-3">
-                            <i class="fas fa-info-circle"></i>
-                            Donasi sudah diverifikasi
-                        </div>
-                    @elseif($donasi->status == 'selesai')
-                        <div class="alert alert-success text-center rounded-3">
+                    <form action="{{ route('admin.donasi.verifikasi', $donasi->id) }}" method="POST" class="mb-3">
+                        {{ csrf_field() }}
+                        <button type="submit" class="btn btn-verifikasi text-white w-100">
                             <i class="fas fa-check-circle"></i>
-                            Donasi telah selesai
-                        </div>
-                    @elseif($donasi->status == 'ditolak')
-                        <div class="alert alert-danger text-center rounded-3">
+                            Verifikasi Donasi
+                        </button>
+                    </form>
+                    <form action="{{ route('admin.donasi.tolak', $donasi->id) }}" method="POST" class="mb-3">
+                        {{ csrf_field() }}
+                        <button type="submit" class="btn btn-tolak text-white w-100">
                             <i class="fas fa-times-circle"></i>
-                            Donasi ditolak
-                        </div>
+                            Tolak Donasi
+                        </button>
+                    </form>
                     @endif
-
                     <a href="{{ route('admin.donasi.index') }}" class="btn btn-back text-white w-100">
                         <i class="fas fa-arrow-left mr-2"></i>
                         Kembali ke Daftar Donasi
@@ -334,6 +313,108 @@
             </div>
         </div>
     </div>
+
+    {{-- ASSIGN KURIR --}}
+    @if($donasi->jenis_donasi == 'barang' && $donasi->status == 'diverifikasi' && !$donasi->penjemputan)
+    <div class="card shadow-sm border-0 mt-4">
+        <div class="card-header text-white" style="background: linear-gradient(135deg, #0f172a, #2563eb);">
+            <h5 class="mb-0">
+                <i class="fas fa-truck mr-2"></i>
+                Assign Kurir Penjemputan
+            </h5>
+        </div>
+        <div class="card-body" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd);">
+            <div class="alert alert-info border-0" style="background: #eff6ff; color: #1e3a8a;">
+                <i class="fas fa-info-circle mr-2"></i>
+                Donasi barang harus ditugaskan ke kurir sebelum diproses.
+            </div>
+            <form action="{{ route('admin.penjemputan.assign', $donasi->id) }}" method="POST">
+                {{ csrf_field() }}
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="font-weight-bold" style="color: #1e3a8a;">
+                                <i class="fas fa-user-circle mr-1"></i>
+                                <strong>Pilih Kurir</strong>
+                            </label>
+                            <select name="kurir_id" class="form-control" style="border: 1px solid #93c5fd;" required>
+                                <option value=""> -- Pilih Kurir -- </option>
+                                @foreach($kurirs as $kurir)
+                                    <option value="{{ $kurir->id }}"> {{ $kurir->name }} </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="font-weight-bold" style="color: #1e3a8a;">
+                                <i class="fas fa-calendar-alt mr-1"></i>
+                                <strong>Tanggal Jemput</strong>
+                            </label>
+                            <input type="date" name="tanggal_jemput" class="form-control" style="border: 1px solid #93c5fd;" required>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="font-weight-bold" style="color: #1e3a8a;">
+                                <i class="fas fa-map-marker-alt mr-1"></i>
+                                <strong>Alamat Jemput</strong>
+                            </label>
+                            <input type="text" name="alamat_jemput" class="form-control" style="border: 1px solid #93c5fd;" value="{{ $donasi->alamat ?? '' }}" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right mt-3">
+                    <button type="submit" class="btn px-5 text-white" style="background: linear-gradient(135deg, #2563eb, #1e40af); border: none; box-shadow: 0 2px 5px rgba(37,99,235,0.3);">
+                        <i class="fas fa-check-circle mr-2"></i> Assign Kurir
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    @endif
+
+    {{-- INFORMASI PENJEMPUTAN --}}
+    @if($donasi->jenis_donasi == 'barang' && $donasi->penjemputan)
+    <div class="card shadow-sm border-0 mt-4">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-truck"></i>
+                Informasi Penjemputan
+            </h5>
+        </div>
+
+        <div class="card-body">
+            <table class="table table-borderless mb-0">
+                <tr>
+                    <th width="220">Nama Kurir</th>
+                    <td>{{ $donasi->penjemputan->kurir->name }}</td>
+                </tr>
+
+                <tr>
+                    <th>Tanggal Jemput</th>
+                    <td>
+                        {{ date('d F Y', strtotime($donasi->penjemputan->tanggal_jemput)) }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Alamat Jemput</th>
+                    <td>{{ $donasi->penjemputan->alamat_jemput }}</td>
+                </tr>
+
+                <tr>
+                    <th>Status</th>
+                    <td>
+                        <span class="badge badge-primary">
+                            {{ ucfirst($donasi->penjemputan->status) }}
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    @endif
 </div>
 
 @endsection

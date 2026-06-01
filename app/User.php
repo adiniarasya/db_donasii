@@ -39,4 +39,9 @@ class User extends Authenticatable
     {
         return $this->role === 'kurir';
     }
+
+    public function penjemputanSelesai()
+    {
+        return $this->hasMany(Penjemputan::class, 'kurir_id')->where('status', 'selesai');
+    }
 }

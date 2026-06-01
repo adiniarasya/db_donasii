@@ -13,10 +13,7 @@ class KurirController extends Controller
 {
     public function index()
     {
-        $kurirs = User::where('role', 'kurir')
-            ->with('kurirProfile')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $kurirs = User::where('role', 'kurir')->with('kurirProfile')->withCount(['penjemputan','penjemputanSelesai'])->orderBy('created_at', 'desc')->get();
             
         return view('admin.kurir.index', compact('kurirs'));
     }
@@ -51,13 +48,13 @@ class KurirController extends Controller
             'alamat' => $request->alamat
         ]);
         
-        return redirect()->route('admin.kurir.index')
-            ->with('success', 'Kurir berhasil ditambahkan!');
+        return redirect()->route('admin.kurir.index')->with('success', 'Kurir berhasil ditambahkan!');
     }
     
     public function edit($id)
     {
         $kurir = User::where('role', 'kurir')->with('kurirProfile')->findOrFail($id);
+
         return view('admin.kurir.edit', compact('kurir'));
     }
     
@@ -89,8 +86,7 @@ class KurirController extends Controller
             ]);
         }
         
-        return redirect()->route('admin.kurir.index')
-            ->with('success', 'Kurir berhasil diupdate!');
+        return redirect()->route('admin.kurir.index')->with('success', 'Kurir berhasil diupdate!');
     }
     
     public function destroy($id)
@@ -104,7 +100,6 @@ class KurirController extends Controller
         
         $kurir->delete();
         
-        return redirect()->route('admin.kurir.index')
-            ->with('success', 'Kurir berhasil dihapus!');
+        return redirect()->route('admin.kurir.index')->with('success', 'Kurir berhasil dihapus!');
     }
 }

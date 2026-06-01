@@ -1,7 +1,5 @@
 @extends('template.layout')
-
 @section('title', 'Manajemen Donasi')
-
 @section('content')
 
 <style>

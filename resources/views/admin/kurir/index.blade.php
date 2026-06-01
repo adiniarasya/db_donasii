@@ -170,13 +170,13 @@
                     <div class="row text-center mb-3 g-2">
                         <div class="col-6">
                             <div class="stat-box">
-                                <div class="stat-number text-primary">{{ $kurir->total_tugas ?? 0 }}</div>
+                                <div class="stat-number text-primary"> {{ $kurir->penjemputan_count }} </div>
                                 <small class="text-muted">Total Tugas</small>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="stat-box">
-                                <div class="stat-number text-success">{{ $kurir->selesai ?? 0 }}</div>
+                                <div class="stat-number text-success">{{ $kurir->penjemputan_selesai_count }}</div>
                                 <small class="text-muted">Selesai</small>
                             </div>
                         </div>

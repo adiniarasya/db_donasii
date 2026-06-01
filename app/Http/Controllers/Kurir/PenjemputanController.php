@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Kurir;
 use App\Http\Controllers\Controller;
 use App\Penjemputan;
 use App\Donasi;
+use App\KurirProfile;
 use Illuminate\Http\Request;
 
 class PenjemputanController extends Controller
@@ -68,12 +69,36 @@ class PenjemputanController extends Controller
         
         return redirect()->back()->with('success', 'Kurir berhasil ditugaskan');
     }
-    public function dashboard()
-{
-    $penjemputan = \App\Penjemputan::where('kurir_id', auth()->user()->id)->get();
-    $totalTugas = $penjemputan->count();
-    $tugasAktif = $penjemputan->where('status', '!=', 'selesai')->count();
-    
-    return view('kurir.dashboard', compact('penjemputan', 'totalTugas', 'tugasAktif'));
-}
+
+    public function profil()
+    {
+        $kurir = auth()->user();
+
+        return view('kurir.profil', compact('kurir'));
+    }
+
+    public function updateProfil(Request $request)
+    {
+        $request->validate([
+            'no_hp' => 'required',
+            'alamat' => 'required'
+        ]);
+
+        $profile = auth()->user()->kurirProfile;
+
+        if ($profile) {
+            $profile->update([
+                'no_hp' => $request->no_hp,
+                'alamat' => $request->alamat
+            ]);
+        } else {
+            \App\KurirProfile::create([
+                'user_id' => auth()->id(),
+                'no_hp' => $request->no_hp,
+                'alamat' => $request->alamat
+            ]);
+        }
+
+        return redirect()->route('kurir.profil')->with('success', 'Profil berhasil diperbarui');
+    }
 }

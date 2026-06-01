@@ -19,15 +19,7 @@ class DonasiController extends Controller
     public function show($id)
     {
         $donasi = Donasi::with('user', 'penjemputan.kurir')->findOrFail($id);
-        
-        // Ambil hanya user dengan role kurir dan pastikan memiliki profile
-        $kurirs = User::where('role', 'kurir')
-            ->with('kurirProfile')
-            ->get()
-            ->filter(function($kurir) {
-                // Hanya tampilkan kurir yang sudah lengkap profile-nya
-                return $kurir->kurirProfile !== null;
-            });
+        $kurirs = User::where('role', 'kurir')->with('kurirProfile')->get();
         
         return view('admin.donasi.show', compact('donasi', 'kurirs'));
     }
@@ -35,9 +27,23 @@ class DonasiController extends Controller
     public function verifikasi($id)
     {
         $donasi = Donasi::findOrFail($id);
-        $donasi->update(['status' => 'diverifikasi']);
-        
-        return redirect()->back()->with('success', 'Donasi berhasil diverifikasi');
+
+        // Jika donasi uang langsung selesai diverifikasi
+        if ($donasi->jenis_donasi == 'uang') {
+
+            $donasi->update([
+                'status' => 'selesai'
+            ]);
+
+            return back()->with('success', 'Donasi uang berhasil diverifikasi');
+        }
+
+        // Jika barang hanya diverifikasi dulu
+        $donasi->update([
+            'status' => 'diverifikasi'
+        ]);
+
+        return back()->with('success', 'Donasi barang berhasil diverifikasi, silakan assign kurir');
     }
     
     public function selesai($id)
